@@ -1,14 +1,19 @@
-import { forwardRef } from 'react';
+import { IModal, IPicture } from '../../App.types';
 import css from './ImageCard.module.css';
 
-const ImageCard = forwardRef(({ picture, onImageClick }, ref) => {
+interface ImageGalleryProps {
+  onImageClick: (image: IModal) => void;
+  picture: IPicture;
+}
+
+const ImageCard = ({ picture, onImageClick }: ImageGalleryProps) => {
   const imgData = {
     imgSrc: picture.urls.regular,
     imgDescription: picture.description,
     imgAlt: picture.alt_description,
   };
   return (
-    <div ref={ref}>
+    <div>
       <div className={css.imgCardContainer}>
         <img
           onClick={() => onImageClick(imgData)}
@@ -28,8 +33,6 @@ const ImageCard = forwardRef(({ picture, onImageClick }, ref) => {
       </div>
     </div>
   );
-});
-
-ImageCard.displayName = 'ImageCard';
+};
 
 export default ImageCard;

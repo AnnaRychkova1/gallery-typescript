@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
+import Modal from 'react-modal';
 import { noquery, errorMes } from './components/services/toaster';
 import requestPictures from './components/services/requestPictures';
 // import css from './App.module.css';
@@ -9,25 +10,22 @@ import ImageGallery from './components/ImageGallery/ImageGallery';
 import LoadMoreBtn from './components/LoadMoreBtn/LoadMoreBtn';
 import ImageModal from './components/ImageModal/ImageModal';
 import SearchBar from './components/SearchBar/SearchBar';
+import { IData, IModal, IPicture } from './App.types';
+
+Modal.setAppElement('#root');
 
 const App = () => {
-  const [searchQuery, setSearchQuery] = useState(null);
-  const [pictures, setPictures] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [loadMore, setLoadMore] = useState(false);
-  const [page, setPage] = useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const itemRef = useRef(null);
-  const heightRef = useRef(null);
-  const [selectedImage, setSelectedImage] = useState({
-    imgSrc: '',
-    imgDescription: '',
-    imgAlt: '',
-  });
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [pictures, setPictures] = useState<IPicture[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [loadMore, setLoadMore] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedImage, setSelectedImage] = useState<IModal | null>(null);
 
   useEffect(() => {
-    if (!searchQuery || searchQuery === null) {
+    if (!searchQuery) {
       setLoadMore(false);
       setIsModalOpen(false);
       setIsError(false);
@@ -41,7 +39,8 @@ const App = () => {
         setIsModalOpen(false);
         setIsLoading(true);
 
-        const data = await requestPictures(searchQuery, page);
+        const data: IData = await requestPictures(searchQuery, page);
+        console.log(data);
 
         if (data.total === 0) {
           noquery();
@@ -53,6 +52,7 @@ const App = () => {
         }
 
         setPictures(prevState => prevState.concat(data.results));
+        // setPictures(prevState => [...prevState, ...data.results]);
       } catch (err) {
         setIsError(true);
         errorMes();
@@ -64,22 +64,7 @@ const App = () => {
     fetchPicturesByQuery();
   }, [searchQuery, page]);
 
-  useEffect(() => {
-    if (page <= 1) {
-      return;
-    }
-
-    if (itemRef.current) {
-      const height = itemRef.current.getBoundingClientRect().height;
-      heightRef.current = height;
-      window.scrollBy({
-        top: heightRef.current,
-        behavior: 'smooth',
-      });
-    }
-  }, [pictures, page]);
-
-  const handleSearchQuery = query => {
+  const handleSearchQuery = (query: string) => {
     setSearchQuery(query);
     setPage(1);
     setPictures([]);
@@ -89,7 +74,7 @@ const App = () => {
     setPage(prevPage => prevPage + 1);
   };
 
-  const handleImageClick = image => {
+  const handleImageClick = (image: IModal) => {
     setSelectedImage(image);
     openModal();
   };
@@ -107,14 +92,10 @@ const App = () => {
     <>
       <SearchBar onSubmit={handleSearchQuery} />
       {isError && <ErrorMessage />}
-      <ImageGallery
-        ref={itemRef}
-        pictures={pictures}
-        onImageClick={handleImageClick}
-      />
+      <ImageGallery pictures={pictures} onImageClick={handleImageClick} />
       {isLoading && <Loader />}
       {loadMore && <LoadMoreBtn onLoadMore={handleLoadMore} />}
-      {isModalOpen && (
+      {isModalOpen && selectedImage && (
         <ImageModal
           {...selectedImage}
           closeModal={closeModal}

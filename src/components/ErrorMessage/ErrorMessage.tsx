@@ -1,7 +1,11 @@
 import { BiError } from 'react-icons/bi';
 import css from './ErrorMessage.module.css';
 
-const ErrorMessage = ({ message = '' }) => {
+interface ErrorMessageProps {
+  message?: string;
+}
+
+const ErrorMessage = ({ message = '' }: ErrorMessageProps) => {
   return (
     <div className={css.errorMessage}>
       <BiError size={36} />

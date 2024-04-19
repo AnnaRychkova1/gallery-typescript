@@ -2,8 +2,18 @@ import { notify } from '../services/toaster';
 import { Field, Form, Formik } from 'formik';
 import css from './SearchBar.module.css';
 
-const SearchBar = ({ onSubmit }) => {
-  const handleSubmit = (values, { resetForm }) => {
+interface SearchBarProps {
+  onSubmit: (query: string) => void;
+}
+
+interface FormValues {
+  query: string;
+}
+const SearchBar = ({ onSubmit }: SearchBarProps) => {
+  const handleSubmit = (
+    values: FormValues,
+    { resetForm }: { resetForm: () => void }
+  ) => {
     const trimmedQuery = values.query.trim();
 
     if (!trimmedQuery) {

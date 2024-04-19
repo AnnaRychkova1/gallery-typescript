@@ -2,7 +2,15 @@ import { MdClose } from 'react-icons/md';
 import Modal from 'react-modal';
 import css from './ImageModal.module.css';
 
-Modal.setAppElement('#root');
+// Modal.setAppElement('#root');
+
+interface ImageModalProps {
+  closeModal: () => void;
+  isModalOpen: boolean;
+  imgSrc?: string;
+  imgDescription?: string;
+  imgAlt?: string;
+}
 
 const ImageModal = ({
   closeModal,
@@ -10,11 +18,7 @@ const ImageModal = ({
   imgSrc,
   imgDescription,
   imgAlt,
-  // тут не працюють короткі властивості, бо якщо немає деяких параметрів в запиті, то нам з бекенда приходить null і саме null рендериться тут. Тому в розмітці робимо перевірку. Фбо перевірку треба було зробити в компоненті ImageCard
-  // imgSrc = 'https://pixabay.com/vectors/default-emblem-icon-icons-matt-1294448/',
-  // imgDescription = 'Image according to your request',
-  // imgAlt = 'Image according to your request',
-}) => {
+}: ImageModalProps) => {
   return (
     <div>
       <Modal
