@@ -40,7 +40,6 @@ const App = () => {
         setIsLoading(true);
 
         const data: IData = await requestPictures(searchQuery, page);
-        console.log(data);
 
         if (data.total === 0) {
           noquery();
@@ -52,7 +51,6 @@ const App = () => {
         }
 
         setPictures(prevState => prevState.concat(data.results));
-        // setPictures(prevState => [...prevState, ...data.results]);
       } catch (err) {
         setIsError(true);
         errorMes();
@@ -76,10 +74,6 @@ const App = () => {
 
   const handleImageClick = (image: IModal) => {
     setSelectedImage(image);
-    openModal();
-  };
-
-  const openModal = () => {
     setIsModalOpen(true);
   };
 
