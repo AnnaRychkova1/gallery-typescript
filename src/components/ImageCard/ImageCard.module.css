@@ -1,0 +1,26 @@
+.imgItem {
+  min-height: 300px;
+}
+
+.imgCardContainer {
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.imgItem:hover {
+  cursor: pointer;
+}
+
+.description {
+  display: flex;
+  gap: 6px 12px;
+  flex-wrap: wrap;
+  padding: 12px;
+}
+
+.descrItem {
+  font-weight: bold;
+}

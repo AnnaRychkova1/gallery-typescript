@@ -1,0 +1,55 @@
+.overlay {
+  position: fixed;
+  inset: 0px;
+  background-color: rgba(199, 232, 242, 0.75);
+}
+
+.modal {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  border: none;
+  background: transparent;
+  overflow: auto;
+  border-radius: 4px;
+  outline: none;
+  padding: 20px;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  max-width: 100vh;
+  max-height: 100vh;
+  transition: all 0.25s ease-in-out;
+}
+
+.btnCloseModal {
+  position: relative;
+  top: 50%;
+  left: 48%;
+  border: none;
+  background-color: transparent;
+}
+
+.imageContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.image {
+  max-width: 100%;
+  max-height: 80vh;
+}
+
+.imageInfo {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  color: rgb(3, 3, 26);
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  background-color: rgba(221, 240, 246, 0.8);
+}
